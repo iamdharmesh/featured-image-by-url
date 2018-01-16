@@ -1,0 +1,50 @@
+.knawatfibu_remove{
+	display: none;
+	position: absolute;
+	right: 6px;
+	color: rgb(255, 255, 255);
+	background-color: #999;
+	text-align: center;
+	cursor: pointer;
+	font-size: 16px;
+	height: 22px;
+	width: 22px; 
+	border-radius: 50%;
+}
+.knawatfibu_remove:hover{
+	background-color: red;
+}
+.knawatfibu_wcgallary:hover .knawatfibu_remove{
+	display: block;
+}
+
+#knawatfibu_noimg, #knawatfibu_img, .knawatfibu_img{
+	max-width:100%;
+	height:auto;
+	width:100%;
+	border:1px dotted #ddd;
+	min-height:20px;
+	margin-top:8px;
+	text-align:center;
+	color:#ddd;
+}
+
+#knawatfibu_noimg{
+	padding: 10px;
+	display: block;
+	box-sizing: border-box;
+}
+
+#knawatfibu_preview, .knawatfibu_preview{
+	text-align:center;
+	width:36%;
+	display:inline-block;
+}
+
+#knawatfibu_url, .knawatfibu_url{
+	width: 60%;
+}
+
+#knawatfibu_alt, .knawatfibu_alt{
+	width: 100%;
+}
