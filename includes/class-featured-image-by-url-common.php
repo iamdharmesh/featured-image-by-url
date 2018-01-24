@@ -211,7 +211,7 @@ class Featured_Image_By_URL_Common {
 				foreach ($gallary_images as $gallary_image ) {
 					$gallary = array();
 					$gallary['url'] = $gallary_image;
-					$imagesizes = getimagesize( $gallary_image );
+					$imagesizes = @getimagesize( $gallary_image );
 					$gallary['width'] = isset( $imagesizes[0] ) ? $imagesizes[0] : '';
 					$gallary['height'] = isset( $imagesizes[1] ) ? $imagesizes[1] : '';
 					$gallarys[] = $gallary;
@@ -225,7 +225,7 @@ class Featured_Image_By_URL_Common {
 				$need_update = false;
 				foreach ($gallary_images as $key => $gallary_image ) {
 					if( !isset( $gallary_image['width'] ) && isset( $gallary_image['url'] ) ){
-						$imagesizes1 = getimagesize( $gallary_image['url'] );
+						$imagesizes1 = @getimagesize( $gallary_image['url'] );
 						$gallary_images[$key]['width'] = isset( $imagesizes1[0] ) ? $imagesizes1[0] : '';
 						$gallary_images[$key]['height'] = isset( $imagesizes1[1] ) ? $imagesizes1[1] : '';
 						$need_update = true;

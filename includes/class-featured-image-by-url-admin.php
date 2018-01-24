@@ -140,7 +140,7 @@ class Featured_Image_By_URL_Admin {
 							'height'  => $img_url['height']
 						);
 				}else{
-					$imagesize = getimagesize( $image_url );
+					$imagesize = @getimagesize( $image_url );
 					$image_url = array(
 						'img_url' => $image_url,
 						'width'	  => isset( $imagesize[0] ) ? $imagesize[0] : '',
@@ -183,7 +183,7 @@ class Featured_Image_By_URL_Admin {
 						$gallary_image['height'] = isset( $old_images[$gallary_image['url']]['height'] ) ? $old_images[$gallary_image['url']]['height'] : '';
 
 					}else{
-						$imagesizes = getimagesize( $knawatfibu_gallary['url'] );
+						$imagesizes = @getimagesize( $knawatfibu_gallary['url'] );
 						$gallary_image['width'] = isset( $imagesizes[0] ) ? $imagesizes[0] : '';
 						$gallary_image['height'] = isset( $imagesizes[1] ) ? $imagesizes[1] : '';
 					}
@@ -226,7 +226,7 @@ class Featured_Image_By_URL_Admin {
 			}else{
 
 				if( isset( $image_meta['img_url'] ) && $image_meta['img_url'] != '' ){
-					$imagesize = getimagesize( $image_meta['img_url'] );
+					$imagesize = @getimagesize( $image_meta['img_url'] );
 					$image_url = array(
 						'img_url' => $image_meta['img_url'],
 						'width'	  => isset( $imagesize[0] ) ? $imagesize[0] : '',
