@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 <div id="knawatfibu_metabox_content" >
 
-	<input id="knawatfibu_url" type="url" name="knawatfibu_url" placeholder="<?php _e('Image URL', 'featured-image-by-url') ?>" />
+	<input id="knawatfibu_url" type="text" name="knawatfibu_url" placeholder="<?php _e('Image URL', 'featured-image-by-url') ?>" />
 	<a id="knawatfibu_preview" class="button" >
 		<?php _e('Preview', 'featured-image-by-url') ?>
 	</a>

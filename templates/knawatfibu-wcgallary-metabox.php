@@ -9,9 +9,9 @@ function knawatfibu_get_gallary_slot( $image_url = '' ){
 	?>
 	<div id="knawatfibu_wcgallary__COUNT__" class="knawatfibu_wcgallary">
 		<div id="knawatfibu_url_wrap__COUNT__" <?php if( $image_url != ''){ echo 'style="display: none;"'; } ?>>
-			<input id="knawatfibu_url__COUNT__" class="knawatfibu_url" type="url" name="knawatfibu_wcgallary[__COUNT__][url]" placeholder="<?php _e('Image URL', 'featured-image-by-url') ?>" data-id="__COUNT__" value="<?php echo $image_url; ?>"/>
+			<input id="knawatfibu_url__COUNT__" class="knawatfibu_url" type="text" name="knawatfibu_wcgallary[__COUNT__][url]" placeholder="<?php _e('Image URL', 'featured-image-by-url') ?>" data-id="__COUNT__" value="<?php echo $image_url; ?>"/>
 			<a id="knawatfibu_preview__COUNT__" class="knawatfibu_preview button" data-id="__COUNT__">
-				<?php _e('Preview', 'featured-image-by-url') ?>
+				<?php _e( 'Preview', 'featured-image-by-url' ); ?>
 			</a>
 		</div>
 		<div id="knawatfibu_img_wrap__COUNT__" <?php if( $image_url == ''){ echo 'style="display: none;"'; } ?>>
