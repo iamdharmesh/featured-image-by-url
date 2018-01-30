@@ -1,5 +1,5 @@
 === Featured Image by URL ===
-Contributors: dharm1025
+Contributors: dharm1025,knawat
 Tags: featured image, url, image url, image, woocommerce, remote featured image, product gallery
 Requires PHP: 5.3
 Requires at least: 4.0
@@ -8,12 +8,12 @@ Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-This plugin allows to use an external URL Images as Featured Image for your post types. Includes support for Product Gallery (WooCommece).
+Featured Image by URL allows to use an external URL Images as Featured Image for your post types. Includes support for Product Gallery (WooCommece).
 
 == Description ==
 <h3>Featured Image by URL :</h3>
 
-This plugin allows to use an external URL Images as Featured Image for your post, page & custom post types like WooCommerce Product. Includes support for Product Gallery (WooCommerce).
+Featured Image by URL allows to use an external URL Images as Featured Image for your post, page & custom post types like WooCommerce Product. Includes support for Product Gallery (WooCommerce).
 
 <h3>Features:</h3>
 
