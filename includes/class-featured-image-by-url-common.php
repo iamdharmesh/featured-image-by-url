@@ -87,8 +87,7 @@ class Featured_Image_By_URL_Common {
 			return $html;
 		}
 
-		if( is_singular( 'product' ) && 'product' == get_post_type( $post_id ) && 'shop_single' == $size ){
-
+		if( is_singular( 'product' ) && 'product' == get_post_type( $post_id ) ){
 			return $html;
 		}
 		
@@ -302,9 +301,11 @@ class Featured_Image_By_URL_Common {
 						$url = $knawatfibu->common->knawatfibu_resize_image_on_the_fly( $url, $size );	
 					}
 					$image_size = $knawatfibu->common->knawatfibu_get_image_size( $size );
-					
-			        if ($url) {
+					if ($url) {
 			        	if( $image_size ){
+			        		if( !isset( $image_size['crop'] ) ){
+								$image_size['crop'] = '';
+							}
 			        		return array(
 				                $url,
 				                $image_size['width'],
@@ -324,7 +325,7 @@ class Featured_Image_By_URL_Common {
 			}
 		}
 
-		if( false !== strpos( $attachment_id, '_knawatfibu_fimage_url' ) && in_array( $size, array( 'shop_thumbnail', 'shop_single', 'full' ) ) ){
+		if( false !== strpos( $attachment_id, '_knawatfibu_fimage_url' ) ){
 			$attachment = explode( '__', $attachment_id );
 			$product_id  = $attachment[1];
 			if( $product_id > 0 ){
@@ -343,9 +344,11 @@ class Featured_Image_By_URL_Common {
 					}
 
 					$image_size = $knawatfibu->common->knawatfibu_get_image_size( $size );
-					
-			        if ($image_url) {
+					if ($image_url) {
 			        	if( $image_size ){
+			        		if( !isset( $image_size['crop'] ) ){
+								$image_size['crop'] = '';
+							}
 			        		return array(
 				                $image_url,
 				                $image_size['width'],
@@ -376,6 +379,12 @@ class Featured_Image_By_URL_Common {
 	function knawatfibu_get_image_size( $size ) {
 		$sizes = $this->knawatfibu_get_image_sizes();
 
+		if( is_array( $size ) ){
+			$woo_size = array();
+			$woo_size['width'] = $size[0];
+			$woo_size['height'] = $size[1];
+			return $woo_size;
+		}
 		if ( isset( $sizes[ $size ] ) ) {
 			return $sizes[ $size ];
 		}
