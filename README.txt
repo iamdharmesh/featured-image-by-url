@@ -4,7 +4,7 @@ Tags: featured image, url, image url, image, woocommerce, remote featured image,
 Requires PHP: 5.3
 Requires at least: 4.0
 Tested up to: 4.9
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -13,7 +13,7 @@ Featured Image by URL allows to use an external URL Images as Featured Image for
 == Description ==
 <h3>Featured Image by URL :</h3>
 
-Featured Image by URL allows to use an external URL Images as Featured Image for your post, page & custom post types like WooCommerce Product. Includes support for Product Gallery (WooCommerce).
+Featured Image by URL allows to use an external URL Images as Featured Image for your post, page & custom post types like WooCommerce Product. Includes support for Product Gallery (WooCommerce). So, using this plugin you can easily set featured image from url.
 
 <h3>Features:</h3>
 
@@ -55,6 +55,9 @@ Featured Image by URL allows to use an external URL Images as Featured Image for
 6. Settings Panel
 
 == Changelog ==
+
+= 1.0.2 =
+* Added support for WooCommece v3.3.2 and above
 
 = 1.0.1 =
 * Some bug fixing & Improvements
