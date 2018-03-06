@@ -66,7 +66,14 @@ class Featured_Image_By_URL_Common {
 			$image_data = $knawatfibu->admin->knawatfibu_get_image_meta( $object_id );
 			if ( isset( $image_data['img_url'] ) && $image_data['img_url'] != '' ){
 				if( $post_type == 'product' ){
-					return '_knawatfibu_fimage_url__' . $object_id;	
+					return '_knawatfibu_fimage_url__' . $object_id;
+				}
+				if( $post_type == 'product_variation' ){
+					if( !is_admin() ){
+						return $object_id;
+					}else{
+						return $value;
+					}
 				}
 				return true;
 			}
@@ -87,7 +94,7 @@ class Featured_Image_By_URL_Common {
 			return $html;
 		}
 
-		if( is_singular( 'product' ) && 'product' == get_post_type( $post_id ) ){
+		if( is_singular( 'product' ) && ( 'product' == get_post_type( $post_id ) || 'product_variation' == get_post_type( $post_id ) ) ){
 			return $html;
 		}
 		
@@ -325,44 +332,48 @@ class Featured_Image_By_URL_Common {
 			}
 		}
 
-		if( false !== strpos( $attachment_id, '_knawatfibu_fimage_url' ) ){
-			$attachment = explode( '__', $attachment_id );
-			$product_id  = $attachment[1];
-			if( $product_id > 0 ){
+		$is_product_image = ( false !== strpos( $attachment_id, '_knawatfibu_fimage_url' ) );
+		$is_productvariation_image = ( is_numeric($attachment_id ) && $attachment_id > 0 && 'product_variation' == get_post_type( $attachment_id ) );
+		if( $is_product_image || $is_productvariation_image ){
 
-				$image_data = $knawatfibu->admin->knawatfibu_get_image_meta( $product_id, true );
+			$product_id = $attachment_id;
+			if( $is_product_image ){
+				$attachment = explode( '__', $attachment_id );
+				$product_id  = $attachment[1];
+			}
 
-				if( !empty( $image_data['img_url'] ) ){
+			$image_data = $knawatfibu->admin->knawatfibu_get_image_meta( $product_id, true );
 
-					$image_url = $image_data['img_url'];
-					$width = isset( $image_data['width'] ) ? $image_data['width'] : '';
-					$height = isset( $image_data['height'] ) ? $image_data['height'] : '';
+			if( !empty( $image_data['img_url'] ) ){
 
-					// Run Photon Resize Magic.
-					if( apply_filters( 'knawatfibu_user_resized_images', true ) ){
-						$image_url = $knawatfibu->common->knawatfibu_resize_image_on_the_fly( $image_url, $size );	
-					}
+				$image_url = $image_data['img_url'];
+				$width = isset( $image_data['width'] ) ? $image_data['width'] : '';
+				$height = isset( $image_data['height'] ) ? $image_data['height'] : '';
 
-					$image_size = $knawatfibu->common->knawatfibu_get_image_size( $size );
-					if ($image_url) {
-			        	if( $image_size ){
-			        		if( !isset( $image_size['crop'] ) ){
-								$image_size['crop'] = '';
-							}
-			        		return array(
-				                $image_url,
-				                $image_size['width'],
-				                $image_size['height'],
-				                $image_size['crop'],
-				            );
-			        	}else{
-			        		if( $width != '' && $height != '' ){
-			        			return array( $image_url, $width, $height, false );
-			        		}
-			        		return array( $image_url, 800, 600, false );
-				       	}
-			        }
+				// Run Photon Resize Magic.
+				if( apply_filters( 'knawatfibu_user_resized_images', true ) ){
+					$image_url = $knawatfibu->common->knawatfibu_resize_image_on_the_fly( $image_url, $size );
 				}
+
+				$image_size = $knawatfibu->common->knawatfibu_get_image_size( $size );
+				if ($image_url) {
+		        	if( $image_size ){
+		        		if( !isset( $image_size['crop'] ) ){
+							$image_size['crop'] = '';
+						}
+						return array(
+			                $image_url,
+			                $image_size['width'],
+			                $image_size['height'],
+			                $image_size['crop'],
+			            );
+		        	}else{
+		        		if( $width != '' && $height != '' ){
+		        			return array( $image_url, $width, $height, false );
+		        		}
+		        		return array( $image_url, 800, 600, false );
+			       	}
+		        }
 			}
 		}
 

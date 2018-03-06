@@ -20,7 +20,8 @@ function knawatfibu_get_gallary_slot( $image_url = '' ){
 		</div>
 	</div>
 	<?php
-	return preg_replace( '/\n/', '', ob_get_clean() );
+	$gallery_image = ob_get_clean();
+	return preg_replace('/\s+/', ' ', trim($gallery_image));
 }
 
 ?>

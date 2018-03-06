@@ -31,8 +31,12 @@ class Featured_Image_By_URL_Admin {
 			add_action( 'add_meta_boxes', array( $this, 'knawatfibu_add_metabox' ), 10, 2 );
 			add_action( 'save_post', array( $this, 'knawatfibu_save_image_url_data' ), 10, 2 );
 			add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_styles') );
+			add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts') );
 			add_action( 'admin_menu', array( $this, 'knawatfibu_add_options_page' ) );
 			add_action( 'admin_init', array( $this, 'knawatfibu_settings_init' ) );
+			// Add & Save Product Variation Featured image by URL.
+			add_action( 'woocommerce_product_after_variable_attributes', array( $this, 'knawatfibu_add_product_variation_image_selector' ), 10, 3 );
+			add_action( 'woocommerce_save_product_variation', array( $this, 'knawatfibu_save_product_variation_image' ), 10, 2 );
 		}
 	}
 
@@ -110,6 +114,27 @@ class Featured_Image_By_URL_Admin {
 		$css_dir = KNAWATFIBU_PLUGIN_URL . 'assets/css/';
 	 	wp_enqueue_style('knawatfibu-admin', $css_dir . 'featured-image-by-url-admin.css', false, "" );
 		
+	}
+
+	/**
+	 * Load Admin Scripts.
+	 *
+	 * Enqueues the required admin scripts.
+	 *
+	 * @since 1.0
+	 * @param string $hook Page hook
+	 * @return void
+	 */
+	function enqueue_admin_scripts( $hook ) {
+
+		$js_dir  = KNAWATFIBU_PLUGIN_URL . 'assets/js/';
+		wp_register_script( 'knawatfibu-admin', $js_dir . 'featured-image-by-url-admin.js', array('jquery' ) );
+		$knawat_strings = array(
+			'invalid_image_url' => __('Error in Image URL', 'featured-image-by-url'),
+		);
+		wp_localize_script( 'knawatfibu-admin', 'knawatfibujs', $knawat_strings );
+		wp_enqueue_script( 'knawatfibu-admin' );
+
 	}
 
 	/**
@@ -219,7 +244,7 @@ class Featured_Image_By_URL_Admin {
 			$image_meta['img_url'] 	 = $img_url;
 		}
 		$image_meta['img_alt'] 	 = $img_alt;
-		if( 'product' == get_post_type( $post_id ) && $is_single_page ){
+		if( ( 'product_variation' == get_post_type( $post_id ) || 'product' == get_post_type( $post_id ) ) && $is_single_page ){
 			if( isset( $img_url['width'] ) ){
 				$image_meta['width'] 	 = $img_url['width'];
 				$image_meta['height'] 	 = $img_url['height'];
@@ -414,4 +439,67 @@ class Featured_Image_By_URL_Admin {
 		return $post_types;
 	}
 
+	/**
+	 * Render Featured image by URL in Product variation
+	 *
+	 * @return void
+	 */
+	public function knawatfibu_add_product_variation_image_selector( $loop, $variation_data, $variation ){
+		$knawatfibu_url = '';
+		if( isset( $variation_data['_knawatfibu_url'][0] ) ){
+			$knawatfibu_url = $variation_data['_knawatfibu_url'][0];
+			$knawatfibu_url = maybe_unserialize( $knawatfibu_url );
+			if( is_array( $knawatfibu_url ) ){
+				$knawatfibu_url = $knawatfibu_url['img_url'];
+			}
+		}
+		?>
+		<div id="knawatfibu_product_variation_<?php echo $variation->ID; ?>" class="knawatfibu_product_variation form-row form-row-first">
+			<label for="knawatfibu_pvar_url_<?php echo $variation->ID; ?>">
+				<strong><?php _e('Product Variation Image by URL', 'featured-image-by-url') ?></strong>
+			</label>
+
+			<div id="knawatfibu_pvar_img_wrap_<?php echo $variation->ID; ?>" class="knawatfibu_pvar_img_wrap" style="<?php if( $knawatfibu_url == '' ){ echo 'display:none'; } ?>" >
+				<span href="#" class="knawatfibu_pvar_remove" data-id="<?php echo $variation->ID; ?>">x</span>
+				<img id="knawatfibu_pvar_img_<?php echo $variation->ID; ?>" class="knawatfibu_pvar_img" data-id="<?php echo $variation->ID; ?>" src="<?php echo $knawatfibu_url; ?>" />
+			</div>
+			<div id="knawatfibu_url_wrap_<?php echo $variation->ID; ?>" style="<?php if( $knawatfibu_url != '' ){ echo 'display:none'; } ?>" >
+				<input id="knawatfibu_pvar_url_<?php echo $variation->ID; ?>" class="knawatfibu_pvar_url" type="text" name="knawatfibu_pvar_url[<?php echo $variation->ID; ?>]" placeholder="<?php _e('Product Variation Image URL', 'featured-image-by-url'); ?>" value="<?php echo $knawatfibu_url; ?>"/>
+				<a id="knawatfibu_pvar_preview_<?php echo $variation->ID; ?>" class="knawatfibu_pvar_preview button" data-id="<?php echo $variation->ID; ?>">
+					<?php _e( 'Preview', 'featured-image-by-url' ); ?>
+				</a>
+			</div>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Save Featured image by URL for Product variation
+	 *
+	 * @return void
+	 */
+	public function knawatfibu_save_product_variation_image( $variation_id, $i ){
+
+		$image_url = isset( $_POST['knawatfibu_pvar_url'][$variation_id] ) ? esc_url( $_POST['knawatfibu_pvar_url'][$variation_id] ) : '';
+		if( $image_url != '' ){
+			$img_url = get_post_meta( $variation_id, $this->image_meta_url , true );
+			if( is_array( $img_url ) && isset( $img_url['img_url'] ) && $image_url == $img_url['img_url'] ){
+					$image_url = array(
+						'img_url' => $image_url,
+						'width'	  => $img_url['width'],
+						'height'  => $img_url['height']
+					);
+			}else{
+				$imagesize = @getimagesize( $image_url );
+				$image_url = array(
+					'img_url' => $image_url,
+					'width'	  => isset( $imagesize[0] ) ? $imagesize[0] : '',
+					'height'  => isset( $imagesize[1] ) ? $imagesize[1] : ''
+				);
+			}
+			update_post_meta( $variation_id, $this->image_meta_url, $image_url );
+		}else{
+			delete_post_meta( $variation_id, $this->image_meta_url );
+		}
+	}
 }
