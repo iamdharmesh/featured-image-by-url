@@ -146,7 +146,7 @@ class Featured_Image_By_URL_Admin {
 	function knawatfibu_save_image_url_data( $post_id, $post ) {
 
 		$cap = $post->post_type === 'page' ? 'edit_page' : 'edit_post';
-		if ( ! current_user_can( $cap, $pid ) || ! post_type_supports( $post->post_type, 'thumbnail' )|| defined( 'DOING_AUTOSAVE' ) ) {
+		if ( ! current_user_can( $cap, $post_id ) || ! post_type_supports( $post->post_type, 'thumbnail' ) || defined( 'DOING_AUTOSAVE' ) ) {
 			return;
 		}
 
