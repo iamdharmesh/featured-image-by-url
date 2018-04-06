@@ -14,8 +14,8 @@ function knawatfibu_get_gallary_slot( $image_url = '' ){
 				<?php _e( 'Preview', 'featured-image-by-url' ); ?>
 			</a>
 		</div>
-		<div id="knawatfibu_img_wrap__COUNT__" <?php if( $image_url == ''){ echo 'style="display: none;"'; } ?>>
-			<span href="#" class="knawatfibu_remove" data-id="__COUNT__">x</span>
+		<div id="knawatfibu_img_wrap__COUNT__" class="knawatfibu_img_wrap" <?php if( $image_url == ''){ echo 'style="display: none;"'; } ?>>
+			<span href="#" class="knawatfibu_remove" data-id="__COUNT__"></span>
 			<img id="knawatfibu_img__COUNT__" class="knawatfibu_img" data-id="__COUNT__" src="<?php echo $image_url; ?>" />
 		</div>
 	</div>
@@ -41,7 +41,7 @@ function knawatfibu_get_gallary_slot( $image_url = '' ){
 	$count++;
 	?>
 </div>
-
+<div style="clear:both"></div>
 <script>
 	jQuery(document).ready(function($){
 

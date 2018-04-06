@@ -460,7 +460,7 @@ class Featured_Image_By_URL_Admin {
 			</label>
 
 			<div id="knawatfibu_pvar_img_wrap_<?php echo $variation->ID; ?>" class="knawatfibu_pvar_img_wrap" style="<?php if( $knawatfibu_url == '' ){ echo 'display:none'; } ?>" >
-				<span href="#" class="knawatfibu_pvar_remove" data-id="<?php echo $variation->ID; ?>">x</span>
+				<span href="#" class="knawatfibu_pvar_remove" data-id="<?php echo $variation->ID; ?>"></span>
 				<img id="knawatfibu_pvar_img_<?php echo $variation->ID; ?>" class="knawatfibu_pvar_img" data-id="<?php echo $variation->ID; ?>" src="<?php echo $knawatfibu_url; ?>" />
 			</div>
 			<div id="knawatfibu_url_wrap_<?php echo $variation->ID; ?>" style="<?php if( $knawatfibu_url != '' ){ echo 'display:none'; } ?>" >
