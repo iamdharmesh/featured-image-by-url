@@ -1,0 +1,116 @@
+# Copyright (C) 2018 Featured Image by URL
+# This file is distributed under the same license as the Featured Image by URL package.
+msgid ""
+msgstr ""
+"Project-Id-Version: Featured Image by URL 1.0.2\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/featured-image-by-"
+"url\n"
+"POT-Creation-Date: 2018-04-16 06:16:32+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2018-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+
+#: featured-image-by-url.php:79 featured-image-by-url.php:86
+msgid "Cheatin&#8217; huh?"
+msgstr ""
+
+#. #-#-#-#-#  featured-image-by-url.pot (Featured Image by URL 1.0.2)  #-#-#-#-#
+#. Plugin Name of the plugin/theme
+#: includes/class-featured-image-by-url-admin.php:58
+#: includes/class-featured-image-by-url-admin.php:275
+msgid "Featured Image by URL"
+msgstr ""
+
+#: includes/class-featured-image-by-url-admin.php:66
+msgid "Product gallery by URLs"
+msgstr ""
+
+#: includes/class-featured-image-by-url-admin.php:133
+msgid "Error in Image URL"
+msgstr ""
+
+#: includes/class-featured-image-by-url-admin.php:319
+msgid "Settings"
+msgstr ""
+
+#: includes/class-featured-image-by-url-admin.php:327
+msgid "Disable Post types"
+msgstr ""
+
+#: includes/class-featured-image-by-url-admin.php:339
+msgid "Display Resized Images"
+msgstr ""
+
+#: includes/class-featured-image-by-url-admin.php:386
+msgid ""
+"Please check checkbox for posttypes on which you want to disable Featured "
+"image by URL."
+msgstr ""
+
+#: includes/class-featured-image-by-url-admin.php:405
+msgid ""
+"Enable display resized images for image sizes like thumbnail, medium, large "
+"etc.."
+msgstr ""
+
+#: includes/class-featured-image-by-url-admin.php:409
+msgid ""
+"You need Jetpack plugin installed & connected  for enable this functionality."
+msgstr ""
+
+#: includes/class-featured-image-by-url-admin.php:459
+msgid "Product Variation Image by URL"
+msgstr ""
+
+#: includes/class-featured-image-by-url-admin.php:467
+msgid "Product Variation Image URL"
+msgstr ""
+
+#: includes/class-featured-image-by-url-admin.php:469
+#: templates/knawatfibu-metabox.php:12
+#: templates/knawatfibu-wcgallary-metabox.php:14
+msgid "Preview"
+msgstr ""
+
+#: templates/knawatfibu-metabox.php:10
+#: templates/knawatfibu-wcgallary-metabox.php:12
+msgid "Image URL"
+msgstr ""
+
+#: templates/knawatfibu-metabox.php:15
+msgid "Alt text (Optional)"
+msgstr ""
+
+#: templates/knawatfibu-metabox.php:18
+msgid "No image"
+msgstr ""
+
+#: templates/knawatfibu-metabox.php:22
+msgid "Remove Image"
+msgstr ""
+
+#: templates/knawatfibu-metabox.php:53
+#: templates/knawatfibu-wcgallary-metabox.php:61
+msgid "Error URL Image"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid "https://wordpress.org/plugins/featured-image-by-url/"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid ""
+"This plugin allows to use an external URL Images as Featured Image for your "
+"post types. Includes support for Product Gallery (WooCommece)."
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "Knawat Team"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "https://github.com/Knawat"
+msgstr ""
