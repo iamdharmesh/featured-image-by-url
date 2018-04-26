@@ -65,9 +65,9 @@ class Featured_Image_By_URL_Common {
 		if ( $meta_key == '_thumbnail_id' ){
 			$image_data = $knawatfibu->admin->knawatfibu_get_image_meta( $object_id );
 			if ( isset( $image_data['img_url'] ) && $image_data['img_url'] != '' ){
-				if( $post_type == 'product' ){
+				/*if( $post_type == 'product' ){
 					return '_knawatfibu_fimage_url__' . $object_id;
-				}
+				}*/
 				if( $post_type == 'product_variation' ){
 					if( !is_admin() ){
 						return $object_id;
@@ -75,7 +75,8 @@ class Featured_Image_By_URL_Common {
 						return $value;
 					}
 				}
-				return true;
+				return '_knawatfibu_fimage_url__' . $object_id;
+				//return true;
 			}
 		}
 		return $value;
