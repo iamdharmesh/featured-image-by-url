@@ -150,78 +150,82 @@ class Featured_Image_By_URL_Admin {
 			return;
 		}
 
-		global $knawatfibu;
-		// Update Featured Image URL
-		$image_url = isset( $_POST['knawatfibu_url'] ) ? esc_url( $_POST['knawatfibu_url'] ) : '';
-		$image_alt = isset( $_POST['knawatfibu_alt'] ) ? wp_strip_all_tags( $_POST['knawatfibu_alt'] ): '';
+		if( isset( $_POST['knawatfibu_url'] ) ){
+			global $knawatfibu;
+			// Update Featured Image URL
+			$image_url = isset( $_POST['knawatfibu_url'] ) ? esc_url( $_POST['knawatfibu_url'] ) : '';
+			$image_alt = isset( $_POST['knawatfibu_alt'] ) ? wp_strip_all_tags( $_POST['knawatfibu_alt'] ): '';
 
-		if ( $image_url != '' ){
-			if( get_post_type( $post_id ) == 'product' ){
-				$img_url = get_post_meta( $post_id, $this->image_meta_url , true );
-				if( is_array( $img_url ) && isset( $img_url['img_url'] ) && $image_url == $img_url['img_url'] ){
+			if ( $image_url != '' ){
+				if( get_post_type( $post_id ) == 'product' ){
+					$img_url = get_post_meta( $post_id, $this->image_meta_url , true );
+					if( is_array( $img_url ) && isset( $img_url['img_url'] ) && $image_url == $img_url['img_url'] ){
+							$image_url = array(
+								'img_url' => $image_url,
+								'width'	  => $img_url['width'],
+								'height'  => $img_url['height']
+							);
+					}else{
+						$imagesize = @getimagesize( $image_url );
 						$image_url = array(
 							'img_url' => $image_url,
-							'width'	  => $img_url['width'],
-							'height'  => $img_url['height']
+							'width'	  => isset( $imagesize[0] ) ? $imagesize[0] : '',
+							'height'  => isset( $imagesize[1] ) ? $imagesize[1] : ''
 						);
-				}else{
-					$imagesize = @getimagesize( $image_url );
-					$image_url = array(
-						'img_url' => $image_url,
-						'width'	  => isset( $imagesize[0] ) ? $imagesize[0] : '',
-						'height'  => isset( $imagesize[1] ) ? $imagesize[1] : ''
-					);
-				}
-			}
-
-			update_post_meta( $post_id, $this->image_meta_url, $image_url );
-			if( $image_alt ){
-				update_post_meta( $post_id, $this->image_meta_alt, $image_alt );
-			}
-		}else{
-			delete_post_meta( $post_id, $this->image_meta_url );
-			delete_post_meta( $post_id, $this->image_meta_alt );
-		}
-
-		// Update WC Gallery
-		$knawatfibu_wcgallary = isset( $_POST['knawatfibu_wcgallary'] ) ? $_POST['knawatfibu_wcgallary'] : '';
-		if( empty( $knawatfibu_wcgallary ) || $post->post_type != 'product' ){
-			return;
-		}
-
-		$old_images = $knawatfibu->common->knawatfibu_get_wcgallary_meta( $post_id );
-		if( !empty( $old_images ) ){
-			foreach ($old_images as $key => $value) {
-				$old_images[$value['url']] = $value;
-			}
-		}
-
-		$gallary_images = array();
-		if( !empty( $knawatfibu_wcgallary ) ){
-			foreach ($knawatfibu_wcgallary as $knawatfibu_gallary ) {
-				if( isset( $knawatfibu_gallary['url'] ) && $knawatfibu_gallary['url'] != '' ){
-					$gallary_image = array();
-					$gallary_image['url'] = $knawatfibu_gallary['url'];
-
-					if( isset( $old_images[$gallary_image['url']]['width'] ) && $old_images[$gallary_image['url']]['width'] != '' ){
-						$gallary_image['width'] = isset( $old_images[$gallary_image['url']]['width'] ) ? $old_images[$gallary_image['url']]['width'] : '';
-						$gallary_image['height'] = isset( $old_images[$gallary_image['url']]['height'] ) ? $old_images[$gallary_image['url']]['height'] : '';
-
-					}else{
-						$imagesizes = @getimagesize( $knawatfibu_gallary['url'] );
-						$gallary_image['width'] = isset( $imagesizes[0] ) ? $imagesizes[0] : '';
-						$gallary_image['height'] = isset( $imagesizes[1] ) ? $imagesizes[1] : '';
 					}
-
-					$gallary_images[] = $gallary_image;
 				}
+
+				update_post_meta( $post_id, $this->image_meta_url, $image_url );
+				if( $image_alt ){
+					update_post_meta( $post_id, $this->image_meta_alt, $image_alt );
+				}
+			}else{
+				delete_post_meta( $post_id, $this->image_meta_url );
+				delete_post_meta( $post_id, $this->image_meta_alt );
 			}
 		}
-		
-		if( !empty( $gallary_images ) ){
-			update_post_meta( $post_id, KNAWATFIBU_WCGALLARY, $gallary_images );
-		}else{
-			delete_post_meta( $post_id, KNAWATFIBU_WCGALLARY );
+
+		if( isset( $_POST['knawatfibu_wcgallary'] ) ){
+			// Update WC Gallery
+			$knawatfibu_wcgallary = isset( $_POST['knawatfibu_wcgallary'] ) ? $_POST['knawatfibu_wcgallary'] : '';
+			if( empty( $knawatfibu_wcgallary ) || $post->post_type != 'product' ){
+				return;
+			}
+
+			$old_images = $knawatfibu->common->knawatfibu_get_wcgallary_meta( $post_id );
+			if( !empty( $old_images ) ){
+				foreach ($old_images as $key => $value) {
+					$old_images[$value['url']] = $value;
+				}
+			}
+
+			$gallary_images = array();
+			if( !empty( $knawatfibu_wcgallary ) ){
+				foreach ($knawatfibu_wcgallary as $knawatfibu_gallary ) {
+					if( isset( $knawatfibu_gallary['url'] ) && $knawatfibu_gallary['url'] != '' ){
+						$gallary_image = array();
+						$gallary_image['url'] = $knawatfibu_gallary['url'];
+
+						if( isset( $old_images[$gallary_image['url']]['width'] ) && $old_images[$gallary_image['url']]['width'] != '' ){
+							$gallary_image['width'] = isset( $old_images[$gallary_image['url']]['width'] ) ? $old_images[$gallary_image['url']]['width'] : '';
+							$gallary_image['height'] = isset( $old_images[$gallary_image['url']]['height'] ) ? $old_images[$gallary_image['url']]['height'] : '';
+
+						}else{
+							$imagesizes = @getimagesize( $knawatfibu_gallary['url'] );
+							$gallary_image['width'] = isset( $imagesizes[0] ) ? $imagesizes[0] : '';
+							$gallary_image['height'] = isset( $imagesizes[1] ) ? $imagesizes[1] : '';
+						}
+
+						$gallary_images[] = $gallary_image;
+					}
+				}
+			}
+
+			if( !empty( $gallary_images ) ){
+				update_post_meta( $post_id, KNAWATFIBU_WCGALLARY, $gallary_images );
+			}else{
+				delete_post_meta( $post_id, KNAWATFIBU_WCGALLARY );
+			}
 		}
 	}
 
