@@ -19,6 +19,7 @@ Featured Image by URL allows to use an external URL Images as Featured Image for
 
 * Set Featured image by URL for all post types including custom post types.
 * WooCommerce Product Gallery by URLs.
+* Image from URL for WooCommerce Product variation.
 * Display Resized Images as per image sizes like "thumbnail", "medium" or any custom-size
 * Lightweight & Easy to use
 
