@@ -138,6 +138,14 @@ class Featured_Image_By_URL_Common {
 			return $image_url;
 		}
 
+		/**
+		 * Photon doesn't support query strings so we ignore image url with query string.
+		 */
+		$parsed = parse_url( $image_url );
+		if( isset( $parsed['query'] ) && $parsed['query'] != '' ){
+			return $image_url;
+		}
+
 		$image_size = $this->knawatfibu_get_image_size( $size );
 		
 		if( !empty( $image_size ) && !empty( $image_size['width'] ) ){
