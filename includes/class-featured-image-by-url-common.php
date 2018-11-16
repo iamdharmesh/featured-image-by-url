@@ -27,6 +27,8 @@ class Featured_Image_By_URL_Common {
 			add_filter( 'wp_get_attachment_image_src', array( $this, 'knawatfibu_replace_attachment_image_src' ), 10, 4 );
 			add_filter( 'woocommerce_product_get_gallery_image_ids', array( $this, 'knawatfibu_set_customized_gallary_ids' ), 99, 2 );
 		}
+		// Add WooCommerce Product listable Thumbnail Support for Woo 3.5 or greater
+		add_action( 'admin_init', array( $this, 'knawatfibu_woo_thumb_support' ) );
 
 		$options = get_option( KNAWATFIBU_OPTIONS );
 		$resize_images = isset( $options['resize_images'] ) ? $options['resize_images']  : false;
@@ -424,5 +426,21 @@ class Featured_Image_By_URL_Common {
 		$disabled_posttypes = isset( $options['disabled_posttypes'] ) ? $options['disabled_posttypes']  : array();
 
 		return in_array( $posttype, $disabled_posttypes );
+	}
+
+	/**
+	 * Add WooCommerce Product listable Thumbnail Support for Woo 3.5 or greater
+	 *
+	 * @since 1.0
+	 * @return void
+	 */
+	public function knawatfibu_woo_thumb_support() {
+		global $pagenow;
+		if( 'edit.php' === $pagenow ){
+			global $typenow;
+			if( 'product' === $typenow && isset( $_GET['post_type'] ) && 'product' === sanitize_text_field( $_GET['post_type'] ) ){
+				add_filter( 'wp_get_attachment_image_src', array( $this, 'knawatfibu_replace_attachment_image_src' ), 10, 4 );
+			}
+		}
 	}
 }
