@@ -22,6 +22,7 @@ class Featured_Image_By_URL_Common {
 		
 		add_action( 'init', array( $this, 'knawatfibu_set_thumbnail_id_true' ) );
 		add_filter( 'post_thumbnail_html', array( $this, 'knawatfibu_overwrite_thumbnail_with_url' ), 999, 5 );
+		add_filter( 'woocommerce_structured_data_product', array( $this, 'knawatfibu_woo_structured_data_product_support' ), 99, 2 );
 
 		if( !is_admin() || ( defined( 'DOING_AJAX' ) && DOING_AJAX ) ){
 			add_filter( 'wp_get_attachment_image_src', array( $this, 'knawatfibu_replace_attachment_image_src' ), 10, 4 );
@@ -442,5 +443,27 @@ class Featured_Image_By_URL_Common {
 				add_filter( 'wp_get_attachment_image_src', array( $this, 'knawatfibu_replace_attachment_image_src' ), 10, 4 );
 			}
 		}
+	}
+
+	/**
+	 * Add Support for WooCommerce Product Structured Data.
+	 *
+	 * @since 1.0
+	 * @param array $markup
+	 * @param object $product
+	 * @return array $markup
+	 */
+	function knawatfibu_woo_structured_data_product_support( $markup, $product ) {
+		if ( isset($markup['image']) && empty($markup['image']) ) {
+			global $knawatfibu;
+			$product_id = $product->get_id();
+			if( !$this->knawatfibu_is_disallow_posttype( 'product' ) && $product_id > 0 ){
+				$image_data = $knawatfibu->admin->knawatfibu_get_image_meta( $product_id );
+				if( !empty($image_data) && isset($image_data['img_url']) && !empty($image_data['img_url']) ) {
+					$markup['image'] = $image_data['img_url'];
+				}
+			}
+		}
+		return $markup;
 	}
 }
