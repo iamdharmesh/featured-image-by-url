@@ -23,6 +23,7 @@ class Featured_Image_By_URL_Common {
 		add_action( 'init', array( $this, 'knawatfibu_set_thumbnail_id_true' ) );
 		add_filter( 'post_thumbnail_html', array( $this, 'knawatfibu_overwrite_thumbnail_with_url' ), 999, 5 );
 		add_filter( 'woocommerce_structured_data_product', array( $this, 'knawatfibu_woo_structured_data_product_support' ), 99, 2 );
+		add_filter( 'facebook_for_woocommerce_integration_prepare_product', array( $this, 'knawatfibu_facebook_for_woocommerce_support' ), 99, 2 );
 
 		if( !is_admin() || ( defined( 'DOING_AJAX' ) && DOING_AJAX ) ){
 			add_filter( 'wp_get_attachment_image_src', array( $this, 'knawatfibu_replace_attachment_image_src' ), 10, 4 );
@@ -309,7 +310,7 @@ class Featured_Image_By_URL_Common {
 			$product_id = $attachment[2];
 			if( $product_id > 0 ){
 				
-				$gallery_images = $knawatfibu->common->knawatfibu_get_wcgallary_meta( $product_id );;
+				$gallery_images = $knawatfibu->common->knawatfibu_get_wcgallary_meta( $product_id );
 				if( !empty( $gallery_images ) ){
 					if( !isset( $gallery_images[$image_num]['url'] ) ){
 						return false;
@@ -465,5 +466,44 @@ class Featured_Image_By_URL_Common {
 			}
 		}
 		return $markup;
+	}
+
+	/**
+	 * Add support for "Facebook for WooCommerce" plugin.
+	 *
+	 * @param array $product_data
+	 * @param int $product_id
+	 * @return array $product_data Altered product data for Facebook feed.
+	 */
+	public function knawatfibu_facebook_for_woocommerce_support( $product_data, $product_id ) {
+		if( empty( $product_data ) || empty( $product_id ) ){
+			return $product_data;
+		}
+
+		global $knawatfibu;
+		// Product Image
+		$product_image = $knawatfibu->admin->knawatfibu_get_image_meta( $product_id );
+		if( isset( $product_image['img_url'] ) && !empty( $product_image['img_url'] ) ){
+			$product_data['image_url'] = $product_image['img_url'];
+			$image_override = get_post_meta($product_id, 'fb_product_image', true);
+			if ( !empty($image_override ) ) {
+				$product_data['image_url'] = $image_override;
+			}
+		}
+		// Product Gallery Images
+		$product_gallery_images = $knawatfibu->common->knawatfibu_get_wcgallary_meta( $product_id );
+		if( !empty( $product_gallery_images ) ){
+			$gallery_images = array();
+			foreach ($product_gallery_images as $wc_gimage) {
+				if( isset( $wc_gimage['url'] ) ){
+					$gallery_images[] = $wc_gimage['url'];
+				}
+			}
+			if( !empty( $gallery_images ) ){
+				$product_data['additional_image_urls'] = $gallery_images;
+			}
+		}
+
+		return $product_data;
 	}
 }
