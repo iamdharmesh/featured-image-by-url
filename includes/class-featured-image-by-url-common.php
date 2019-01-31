@@ -24,6 +24,7 @@ class Featured_Image_By_URL_Common {
 		add_filter( 'post_thumbnail_html', array( $this, 'knawatfibu_overwrite_thumbnail_with_url' ), 999, 5 );
 		add_filter( 'woocommerce_structured_data_product', array( $this, 'knawatfibu_woo_structured_data_product_support' ), 99, 2 );
 		add_filter( 'facebook_for_woocommerce_integration_prepare_product', array( $this, 'knawatfibu_facebook_for_woocommerce_support' ), 99, 2 );
+		add_filter( 'shopzio_product_image_from_id', array( $this, 'knawatfibu_shopzio_product_image_url' ), 10, 2 );
 
 		if( !is_admin() || ( defined( 'DOING_AJAX' ) && DOING_AJAX ) ){
 			add_filter( 'wp_get_attachment_image_src', array( $this, 'knawatfibu_replace_attachment_image_src' ), 10, 4 );
@@ -506,4 +507,26 @@ class Featured_Image_By_URL_Common {
 
 		return $product_data;
 	}
+
+	/**
+	 * Add Support for Shopz.io WC GraphQL Support.
+	 *
+	 * @since 1.0
+	 * @param array|string $image
+	 * @param string $attachment_id
+	 * @return altered Image.
+	 */
+	function knawatfibu_shopzio_product_image_url( $image, $attachment_id ) {
+		if( empty( $attachment_id ) || !empty($image)){
+			return $image;
+		}
+
+		$image_data = $this->knawatfibu_replace_attachment_image_src( $image, $attachment_id, 'full', false);
+		if (!empty($image_data) && isset($image_data[0]) && !empty($image_data[0])) {
+			$image = $image_data[0];
+		}
+
+		return $image;
+	}
+
 }
