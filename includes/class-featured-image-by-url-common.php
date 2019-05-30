@@ -38,7 +38,30 @@ class Featured_Image_By_URL_Common {
 		if( !$resize_images ){
 			add_filter( 'knawatfibu_user_resized_images', '__return_false' );
 		}
+
+		// Fix the issue of images not appearing .. 
+		// solved here : https://wordpress.org/support/topic/doesnt-work-with-woocommerce-3-6-0/#post-11490338
+		add_filter('woocommerce_product_get_image_id', array( $this, 'fibu_hotfix_wc360'), 10, 2);
 	}
+
+	/**
+	 * Fix getting the correct url for product image.
+	 *
+	 * @return value
+	 */
+	function fibu_hotfix_wc360( $value, $product){
+		global $knawatfibu;
+		$product_id = $product->get_id();
+		if(!empty($product_id) && !empty($knawatfibu)){
+			$post_type = get_post_type( $product_id );
+			$image_data = $knawatfibu->admin->knawatfibu_get_image_meta( $product_id );
+			if ( isset( $image_data['img_url'] ) && $image_data['img_url'] != '' ){
+				return '_knawatfibu_fimage_url__' . $product_id;
+			}
+		}
+		return $value;
+	}
+	
 
 	/**
 	 * add filters for set '_thubmnail_id' true if post has external featured image.
