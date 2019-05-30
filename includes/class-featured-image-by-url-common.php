@@ -101,7 +101,6 @@ class Featured_Image_By_URL_Common {
 					}
 				}
 				return '_knawatfibu_fimage_url__' . $object_id;
-				//return true;
 			}
 		}
 		return $value;
@@ -542,5 +541,4 @@ class Featured_Image_By_URL_Common {
 
 		return $image;
 	}
-
 }
