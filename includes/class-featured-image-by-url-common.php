@@ -41,7 +41,7 @@ class Featured_Image_By_URL_Common {
 
 		// Fix the issue of images not appearing .. 
 		// solved here : https://wordpress.org/support/topic/doesnt-work-with-woocommerce-3-6-0/#post-11490338
-		add_filter('woocommerce_product_get_image_id', array( $this, 'woocommerce_product_get_image_id'), 99, 2);
+		add_filter('woocommerce_product_get_image_id', array( $this, 'knawatfibu_woocommerce_36_support'), 99, 2);
 	}
 
 	/**
@@ -49,7 +49,7 @@ class Featured_Image_By_URL_Common {
 	 *
 	 * @return value
 	 */
-	function woocommerce_product_get_image_id( $value, $product){
+	function knawatfibu_woocommerce_36_support( $value, $product){
 		global $knawatfibu;
 		$product_id = $product->get_id();
 		if(!empty($product_id) && !empty($knawatfibu)){
