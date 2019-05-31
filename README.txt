@@ -64,7 +64,7 @@ Featured Image by URL allows to use an external URL Images as Featured Image for
 == Changelog ==
 
 = 1.1.4 =
-* FIXED: Product Images issue.
+* ADDED: Support for WooCommerce v3.6 and later versions.
 
 = 1.1.3 =
 * ADDED: Support for WooCommerce Product Structured Data.
