@@ -38,7 +38,30 @@ class Featured_Image_By_URL_Common {
 		if( !$resize_images ){
 			add_filter( 'knawatfibu_user_resized_images', '__return_false' );
 		}
+
+		// Fix the issue of images not appearing .. 
+		// solved here : https://wordpress.org/support/topic/doesnt-work-with-woocommerce-3-6-0/#post-11490338
+		add_filter('woocommerce_product_get_image_id', array( $this, 'knawatfibu_woocommerce_36_support'), 99, 2);
 	}
+
+	/**
+	 * Fix getting the correct url for product image.
+	 *
+	 * @return value
+	 */
+	function knawatfibu_woocommerce_36_support( $value, $product){
+		global $knawatfibu;
+		$product_id = $product->get_id();
+		if(!empty($product_id) && !empty($knawatfibu)){
+			$post_type = get_post_type( $product_id );
+			$image_data = $knawatfibu->admin->knawatfibu_get_image_meta( $product_id );
+			if ( isset( $image_data['img_url'] ) && $image_data['img_url'] != '' ){
+				return '_knawatfibu_fimage_url__' . $product_id;
+			}
+		}
+		return $value;
+	}
+	
 
 	/**
 	 * add filters for set '_thubmnail_id' true if post has external featured image.
@@ -70,9 +93,6 @@ class Featured_Image_By_URL_Common {
 		if ( $meta_key == '_thumbnail_id' ){
 			$image_data = $knawatfibu->admin->knawatfibu_get_image_meta( $object_id );
 			if ( isset( $image_data['img_url'] ) && $image_data['img_url'] != '' ){
-				/*if( $post_type == 'product' ){
-					return '_knawatfibu_fimage_url__' . $object_id;
-				}*/
 				if( $post_type == 'product_variation' ){
 					if( !is_admin() ){
 						return $object_id;
@@ -81,7 +101,6 @@ class Featured_Image_By_URL_Common {
 					}
 				}
 				return '_knawatfibu_fimage_url__' . $object_id;
-				//return true;
 			}
 		}
 		return $value;
@@ -174,7 +193,6 @@ class Featured_Image_By_URL_Common {
 				}else{
 					return jetpack_photon_url( $image_url, array( 'fit' => "$width,$height" ) );
 				}
-				
 			}
 			//$image_url = Jetpack_PostImages::fit_image_url ( $image_url, $image_size['width'], $image_size['height'] );
 		}
@@ -192,9 +210,7 @@ class Featured_Image_By_URL_Common {
 	 */
 	function knawatfibu_get_image_sizes() {
 		global $_wp_additional_image_sizes;
-
 		$sizes = array();
-
 		foreach ( get_intermediate_image_sizes() as $_size ) {
 			if ( in_array( $_size, array('thumbnail', 'medium', 'medium_large', 'large') ) ) {
 				$sizes[ $_size ]['width']  = get_option( "{$_size}_size_w" );
@@ -208,7 +224,6 @@ class Featured_Image_By_URL_Common {
 				);
 			}
 		}
-
 		return $sizes;
 	}
 
@@ -257,8 +272,6 @@ class Featured_Image_By_URL_Common {
 				return $gallary_images;
 			}	
 		}
-		
-		
 		return $gallary_images;
 	}
 
@@ -323,25 +336,24 @@ class Featured_Image_By_URL_Common {
 					}
 					$image_size = $knawatfibu->common->knawatfibu_get_image_size( $size );
 					if ($url) {
-			        	if( $image_size ){
-			        		if( !isset( $image_size['crop'] ) ){
+						if( $image_size ){
+							if( !isset( $image_size['crop'] ) ){
 								$image_size['crop'] = '';
 							}
-			        		return array(
-				                $url,
-				                $image_size['width'],
-				                $image_size['height'],
-				                $image_size['crop'],
-				            );
-			        	}else{
-			        		if( $gallery_images[$image_num]['width'] != '' && $gallery_images[$image_num]['width'] > 0 ){
-			        			return array( $url, $gallery_images[$image_num]['width'], $gallery_images[$image_num]['height'], false );
-			        		}else{
-			        			return array( $url, 800, 600, false );
-			        		}
-			        		
-				       	}
-			        }
+							return array(
+										$url,
+										$image_size['width'],
+										$image_size['height'],
+										$image_size['crop'],
+								);
+						}else{
+							if( $gallery_images[$image_num]['width'] != '' && $gallery_images[$image_num]['width'] > 0 ){
+								return array( $url, $gallery_images[$image_num]['width'], $gallery_images[$image_num]['height'], false );
+							}else{
+								return array( $url, 800, 600, false );
+							}
+						}
+					}
 				}
 			}
 		}
@@ -358,7 +370,8 @@ class Featured_Image_By_URL_Common {
 
 			$image_data = $knawatfibu->admin->knawatfibu_get_image_meta( $product_id, true );
 
-			if( !empty( $image_data['img_url'] ) ){
+			// if( !empty( $image_data['img_url'] ) ){
+			if ( isset( $image_data['img_url'] ) && $image_data['img_url'] != '' ){
 
 				$image_url = $image_data['img_url'];
 				$width = isset( $image_data['width'] ) ? $image_data['width'] : '';
@@ -371,27 +384,27 @@ class Featured_Image_By_URL_Common {
 
 				$image_size = $knawatfibu->common->knawatfibu_get_image_size( $size );
 				if ($image_url) {
-		        	if( $image_size ){
-		        		if( !isset( $image_size['crop'] ) ){
+					if( $image_size ){
+						if( !isset( $image_size['crop'] ) ){
 							$image_size['crop'] = '';
 						}
 						return array(
-			                $image_url,
-			                $image_size['width'],
-			                $image_size['height'],
-			                $image_size['crop'],
-			            );
-		        	}else{
-		        		if( $width != '' && $height != '' ){
-		        			return array( $image_url, $width, $height, false );
-		        		}
-		        		return array( $image_url, 800, 600, false );
-			       	}
-		        }
+									$image_url,
+									$image_size['width'],
+									$image_size['height'],
+									$image_size['crop'],
+							);
+					}else{
+						if( $width != '' && $height != '' ){
+							return array( $image_url, $width, $height, false );
+						}
+						return array( $image_url, 800, 600, false );
+					}
+				}
 			}
 		}
 
-	    return $image;
+		return $image;
 	}
 
 	/**
@@ -528,5 +541,4 @@ class Featured_Image_By_URL_Common {
 
 		return $image;
 	}
-
 }
