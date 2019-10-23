@@ -1,10 +1,10 @@
 === Featured Image by URL ===
-Contributors: dharm1025,knawat,esl4m
+Contributors: dharm1025,knawat,esl4m,firstanonymous
 Tags: featured image, url, image url, image, woocommerce, remote featured image, product gallery
 Requires PHP: 5.3
 Requires at least: 4.0
-Tested up to: 5.0
-Stable tag: 1.1.4
+Tested up to: 5.3
+Stable tag: 1.1.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -62,6 +62,9 @@ Featured Image by URL allows to use an external URL Images as Featured Image for
 6. Settings Panel
 
 == Changelog ==
+
+= 1.1.5 =
+* Tested with latest versions of both Wordpress 5.3 and WooCommece 3.7.1.
 
 = 1.1.4 =
 * ADDED: Support for WooCommerce v3.6 and later versions.
