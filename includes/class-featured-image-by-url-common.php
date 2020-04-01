@@ -21,6 +21,7 @@ class Featured_Image_By_URL_Common {
 	public function __construct() {
 		
 		add_action( 'init', array( $this, 'knawatfibu_set_thumbnail_id_true' ) );
+		add_action( 'has_post_thumbnail', array( $this, 'knawatfibu_has_post_thumbnail_true' ), 20, 3 );
 		add_filter( 'post_thumbnail_html', array( $this, 'knawatfibu_overwrite_thumbnail_with_url' ), 999, 5 );
 		add_filter( 'woocommerce_structured_data_product', array( $this, 'knawatfibu_woo_structured_data_product_support' ), 99, 2 );
 		add_filter( 'facebook_for_woocommerce_integration_prepare_product', array( $this, 'knawatfibu_facebook_for_woocommerce_support' ), 99, 2 );
@@ -102,6 +103,34 @@ class Featured_Image_By_URL_Common {
 				}
 				return '_knawatfibu_fimage_url__' . $object_id;
 			}
+		}
+		return $value;
+	}
+
+	/**
+	 * Set 'has_post_thumbnail' true if post has external featured image.
+	 *
+	 * @since 1.1
+	 */
+	function knawatfibu_has_post_thumbnail_true( $value, $object_id, $thumbnail_id ){
+
+		global $knawatfibu;
+		$post = get_post( $object_id );
+		$post_type = get_post_type( $post->ID );
+		if( $this->knawatfibu_is_disallow_posttype( $post_type ) ){
+			return $value;
+		}
+
+		$image_data = $knawatfibu->admin->knawatfibu_get_image_meta( $post->ID );
+		if ( isset( $image_data['img_url'] ) && $image_data['img_url'] != '' ){
+			if( $post_type == 'product_variation' ){
+				if( !is_admin() ){
+					return $post->ID;
+				}else{
+					return $value;
+				}
+			}
+			return '_knawatfibu_fimage_url__' . $post->ID;
 		}
 		return $value;
 	}
