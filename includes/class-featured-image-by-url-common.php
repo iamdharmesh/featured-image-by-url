@@ -20,13 +20,13 @@ class Featured_Image_By_URL_Common {
 	 */
 	public function __construct() {
 		
-		add_action( 'init', array( $this, 'knawatfibu_set_thumbnail_id_true' ) );
 		add_filter( 'post_thumbnail_html', array( $this, 'knawatfibu_overwrite_thumbnail_with_url' ), 999, 5 );
 		add_filter( 'woocommerce_structured_data_product', array( $this, 'knawatfibu_woo_structured_data_product_support' ), 99, 2 );
 		add_filter( 'facebook_for_woocommerce_integration_prepare_product', array( $this, 'knawatfibu_facebook_for_woocommerce_support' ), 99, 2 );
 		add_filter( 'shopzio_product_image_from_id', array( $this, 'knawatfibu_shopzio_product_image_url' ), 10, 2 );
-
+		
 		if( !is_admin() || ( defined( 'DOING_AJAX' ) && DOING_AJAX ) ){
+			add_action( 'init', array( $this, 'knawatfibu_set_thumbnail_id_true' ) );
 			add_filter( 'wp_get_attachment_image_src', array( $this, 'knawatfibu_replace_attachment_image_src' ), 10, 4 );
 			add_filter( 'woocommerce_product_get_gallery_image_ids', array( $this, 'knawatfibu_set_customized_gallary_ids' ), 99, 2 );
 		}
