@@ -24,11 +24,13 @@ class Featured_Image_By_URL_Common {
 		add_filter( 'woocommerce_structured_data_product', array( $this, 'knawatfibu_woo_structured_data_product_support' ), 99, 2 );
 		add_filter( 'facebook_for_woocommerce_integration_prepare_product', array( $this, 'knawatfibu_facebook_for_woocommerce_support' ), 99, 2 );
 		add_filter( 'shopzio_product_image_from_id', array( $this, 'knawatfibu_shopzio_product_image_url' ), 10, 2 );
-		
+
 		if( !is_admin() || ( defined( 'DOING_AJAX' ) && DOING_AJAX ) ){
 			add_action( 'init', array( $this, 'knawatfibu_set_thumbnail_id_true' ) );
 			add_filter( 'wp_get_attachment_image_src', array( $this, 'knawatfibu_replace_attachment_image_src' ), 10, 4 );
 			add_filter( 'woocommerce_product_get_gallery_image_ids', array( $this, 'knawatfibu_set_customized_gallary_ids' ), 99, 2 );
+			// Product Variation image Support
+			add_filter( 'woocommerce_available_variation', array( $this, 'knawatfibu_woocommerce_available_variation' ), 99, 3 );
 		}
 		// Add WooCommerce Product listable Thumbnail Support for Woo 3.5 or greater
 		add_action( 'admin_init', array( $this, 'knawatfibu_woo_thumb_support' ) );
@@ -531,5 +533,43 @@ class Featured_Image_By_URL_Common {
 		}
 
 		return $image;
+	}
+
+	function knawatfibu_woocommerce_available_variation( $value, $variable_product, $variation ){
+		$variation_id =  $variation->get_id();
+		if( empty( $variation_id ) ){
+			return $value;
+		}
+
+		global $knawatfibu;
+		// Product Variation Image
+		$variation_image = $knawatfibu->admin->knawatfibu_get_image_meta( $variation_id, true );
+		if( isset( $variation_image['img_url'] ) && !empty( $variation_image['img_url'] ) && isset($value['image'])){
+			$image_url = $variation_image['img_url'];
+			$width = (isset( $variation_image['width'] ) && !empty($variation_image['width'])) ? $variation_image['width'] : '';
+			$height = (isset( $variation_image['height'] ) && !empty($variation_image['height'])) ? $variation_image['height'] : '';
+
+			$value['image']['url'] = $image_url;
+			// Large version.
+			$value['image']['full_src'] = $image_url;
+			$value['image']['full_src_w'] = $width;
+			$value['image']['full_src_h'] = $height;
+
+			// Gallery thumbnail.
+			$value['image']['gallery_thumbnail_src'] = $image_url;
+			$value['image']['gallery_thumbnail_src_w'] = $width;
+			$value['image']['gallery_thumbnail_src_h'] = $height;
+
+			// Thumbnail version.
+			$value['image']['thumb_src'] = $image_url;
+			$value['image']['thumb_src_w'] = $width;
+			$value['image']['thumb_src_h'] = $height;
+
+			// Image version.
+			$value['image']['src'] = $image_url;
+			$value['image']['src_w'] = $width;
+			$value['image']['src_h'] = $height;
+		}
+		return $value;
 	}
 }
