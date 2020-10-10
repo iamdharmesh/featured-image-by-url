@@ -3,7 +3,7 @@
  * Plugin Name:       Featured Image by URL
  * Plugin URI:        https://wordpress.org/plugins/featured-image-by-url/
  * Description:       This plugin allows to use an external URL Images as Featured Image for your post types. Includes support for Product Gallery (WooCommece).
- * Version:           1.1.4
+ * Version:           1.1.7
  * Author:            Knawat Team
  * Author URI:        https://github.com/Knawat
  * License:           GPL-2.0+

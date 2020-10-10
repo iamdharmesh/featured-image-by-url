@@ -1,15 +1,15 @@
-# Copyright (C) 2018 Featured Image by URL
+# Copyright (C) 2020 Featured Image by URL
 # This file is distributed under the same license as the Featured Image by URL package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Featured Image by URL 1.1.0\n"
+"Project-Id-Version: Featured Image by URL 1.1.7\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/featured-image-by-"
 "url\n"
-"POT-Creation-Date: 2018-04-16 06:24:46+00:00\n"
+"POT-Creation-Date: 2020-10-02 12:53:04+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2018-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2020-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 
@@ -17,10 +17,10 @@ msgstr ""
 msgid "Cheatin&#8217; huh?"
 msgstr ""
 
-#. #-#-#-#-#  featured-image-by-url.pot (Featured Image by URL 1.1.0)  #-#-#-#-#
+#. #-#-#-#-#  feature-image-by-url.pot (Featured Image by URL 1.1.7)  #-#-#-#-#
 #. Plugin Name of the plugin/theme
 #: includes/class-featured-image-by-url-admin.php:58
-#: includes/class-featured-image-by-url-admin.php:275
+#: includes/class-featured-image-by-url-admin.php:279
 msgid "Featured Image by URL"
 msgstr ""
 
@@ -32,67 +32,67 @@ msgstr ""
 msgid "Error in Image URL"
 msgstr ""
 
-#: includes/class-featured-image-by-url-admin.php:319
+#: includes/class-featured-image-by-url-admin.php:323
 msgid "Settings"
 msgstr ""
 
-#: includes/class-featured-image-by-url-admin.php:327
+#: includes/class-featured-image-by-url-admin.php:331
 msgid "Disable Post types"
 msgstr ""
 
-#: includes/class-featured-image-by-url-admin.php:339
+#: includes/class-featured-image-by-url-admin.php:343
 msgid "Display Resized Images"
 msgstr ""
 
-#: includes/class-featured-image-by-url-admin.php:386
+#: includes/class-featured-image-by-url-admin.php:390
 msgid ""
 "Please check checkbox for posttypes on which you want to disable Featured "
 "image by URL."
 msgstr ""
 
-#: includes/class-featured-image-by-url-admin.php:405
+#: includes/class-featured-image-by-url-admin.php:409
 msgid ""
 "Enable display resized images for image sizes like thumbnail, medium, large "
 "etc.."
 msgstr ""
 
-#: includes/class-featured-image-by-url-admin.php:409
+#: includes/class-featured-image-by-url-admin.php:413
 msgid ""
 "You need Jetpack plugin installed & connected  for enable this functionality."
 msgstr ""
 
-#: includes/class-featured-image-by-url-admin.php:459
+#: includes/class-featured-image-by-url-admin.php:463
 msgid "Product Variation Image by URL"
 msgstr ""
 
-#: includes/class-featured-image-by-url-admin.php:467
+#: includes/class-featured-image-by-url-admin.php:471
 msgid "Product Variation Image URL"
 msgstr ""
 
-#: includes/class-featured-image-by-url-admin.php:469
-#: templates/knawatfibu-metabox.php:12
+#: includes/class-featured-image-by-url-admin.php:473
+#: templates/knawatfibu-metabox.php:20
 #: templates/knawatfibu-wcgallary-metabox.php:14
 msgid "Preview"
 msgstr ""
 
-#: templates/knawatfibu-metabox.php:10
+#: templates/knawatfibu-metabox.php:18
 #: templates/knawatfibu-wcgallary-metabox.php:12
 msgid "Image URL"
 msgstr ""
 
-#: templates/knawatfibu-metabox.php:15
+#: templates/knawatfibu-metabox.php:23
 msgid "Alt text (Optional)"
 msgstr ""
 
-#: templates/knawatfibu-metabox.php:18
+#: templates/knawatfibu-metabox.php:26
 msgid "No image"
 msgstr ""
 
-#: templates/knawatfibu-metabox.php:22
+#: templates/knawatfibu-metabox.php:30
 msgid "Remove Image"
 msgstr ""
 
-#: templates/knawatfibu-metabox.php:53
+#: templates/knawatfibu-metabox.php:59
 #: templates/knawatfibu-wcgallary-metabox.php:61
 msgid "Error URL Image"
 msgstr ""
