@@ -1,5 +1,5 @@
 === Featured Image by URL ===
-Contributors: dharm1025,knawat,esl4m,firstanonymous
+Contributors: dharm1025,hazemkhaled,esl4m,firstanonymous
 Tags: featured image, url, image url, image, woocommerce, remote featured image, product gallery
 Requires PHP: 5.3
 Requires at least: 4.0
