@@ -82,7 +82,7 @@ class Featured_Image_By_URL_Common {
 	 * Set '_thubmnail_id' true if post has external featured image.
 	 *
 	 * @since 1.0
-	 * @return void
+	 * @return mixed
 	 */
 	function knawatfibu_set_thumbnail_true( $value, $object_id, $meta_key, $single ){
 
@@ -447,7 +447,7 @@ class Featured_Image_By_URL_Common {
 		global $pagenow;
 		if( 'edit.php' === $pagenow ){
 			global $typenow;
-			if( 'product' === $typenow && isset( $_GET['post_type'] ) && 'product' === sanitize_text_field( $_GET['post_type'] ) ){
+			if( 'product' === $typenow && isset( $_GET['post_type'] ) && 'product' === sanitize_text_field( wp_unslash( $_GET['post_type'] ) ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 				add_filter( 'wp_get_attachment_image_src', array( $this, 'knawatfibu_replace_attachment_image_src' ), 10, 4 );
 			}
 		}
@@ -457,7 +457,7 @@ class Featured_Image_By_URL_Common {
 	 * Add Support for WooCommerce Product Structured Data.
 	 *
 	 * @since 1.0
-	 * @param array $markup
+	 * @param array  $markup
 	 * @param object $product
 	 * @return array $markup
 	 */
@@ -519,7 +519,7 @@ class Featured_Image_By_URL_Common {
 	 *
 	 * @since 1.0
 	 * @param array|string $image
-	 * @param string $attachment_id
+	 * @param string       $attachment_id
 	 * @return altered Image.
 	 */
 	function knawatfibu_shopzio_product_image_url( $image, $attachment_id ) {

@@ -3,7 +3,7 @@
  * Plugin Name:       Featured Image by URL
  * Plugin URI:        https://wordpress.org/plugins/featured-image-by-url/
  * Description:       This plugin allows to use an external URL Images as Featured Image for your post types. Includes support for Product Gallery (WooCommece).
- * Version:           1.1.7
+ * Version:           1.1.9
  * Author:            Knawat
  * Author URI:        https://www.knawat.com/?utm_source=wordpress.org&utm_medium=social&utm_campaign=WordPress%20Image%20by%20URL
  * License:           GPL-2.0+
@@ -28,6 +28,7 @@ class Featured_Image_By_URL{
 	/** Singleton *************************************************************/
 	/**
 	 * Featured_Image_By_URL The one true Featured_Image_By_URL.
+	 * @var Featured_Image_By_URL $instance
 	 */
 	private static $instance;
 
@@ -76,14 +77,14 @@ class Featured_Image_By_URL{
 	 *
 	 * @since 1.0.0
 	 */
-	public function __clone() { _doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'featured-image-by-url' ), '1.1.4' ); }
+	public function __clone() { _doing_it_wrong( __FUNCTION__, esc_html__( 'Cheatin&#8217; huh?', 'featured-image-by-url' ), '1.1.9' ); }
 
 	/**
 	 * A dummy magic method to prevent Featured_Image_By_URL from being unserialized.
 	 *
 	 * @since 1.0.0
 	 */
-	public function __wakeup() { _doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'featured-image-by-url' ), '1.1.4' ); }
+	public function __wakeup() { _doing_it_wrong( __FUNCTION__, esc_html__( 'Cheatin&#8217; huh?', 'featured-image-by-url' ), '1.1.9' ); }
 
 
 	/**
