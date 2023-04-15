@@ -112,7 +112,7 @@ class Featured_Image_By_URL_Admin {
 	function enqueue_admin_styles( $hook ) {
 		
 		$css_dir = KNAWATFIBU_PLUGIN_URL . 'assets/css/';
-	 	wp_enqueue_style('knawatfibu-admin', $css_dir . 'featured-image-by-url-admin.css', false, "" );
+	 	wp_enqueue_style('knawatfibu-admin', $css_dir . 'featured-image-by-url-admin.css', array(), '1.1.9', "" );
 		
 	}
 
@@ -150,11 +150,12 @@ class Featured_Image_By_URL_Admin {
 			return;
 		}
 
-		if( isset( $_POST['knawatfibu_url'] ) ){
+		if( isset( $_POST['knawatfibu_url'] ) ){ // phpcs:ignore WordPress.Security.NonceVerification.Missing
 			global $knawatfibu;
 			// Update Featured Image URL
-			$image_url = isset( $_POST['knawatfibu_url'] ) ? esc_url( $_POST['knawatfibu_url'] ) : '';
-			$image_alt = isset( $_POST['knawatfibu_alt'] ) ? wp_strip_all_tags( $_POST['knawatfibu_alt'] ): '';
+			// phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
+			$image_url = isset( $_POST['knawatfibu_url'] ) ? esc_url_raw( $_POST['knawatfibu_url'] ) : '';
+			$image_alt = isset( $_POST['knawatfibu_alt'] ) ? wp_strip_all_tags( $_POST['knawatfibu_alt'] ): ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
 
 			if ( $image_url != '' ){
 				if( get_post_type( $post_id ) == 'product' ){
@@ -185,9 +186,9 @@ class Featured_Image_By_URL_Admin {
 			}
 		}
 
-		if( isset( $_POST['knawatfibu_wcgallary'] ) ){
+		if( isset( $_POST['knawatfibu_wcgallary'] ) ){ // phpcs:ignore WordPress.Security.NonceVerification.Missing
 			// Update WC Gallery
-			$knawatfibu_wcgallary = isset( $_POST['knawatfibu_wcgallary'] ) ? $_POST['knawatfibu_wcgallary'] : '';
+			$knawatfibu_wcgallary = isset( $_POST['knawatfibu_wcgallary'] ) ? $this->knawatfibu_sanitize( $_POST['knawatfibu_wcgallary'] ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 			if( empty( $knawatfibu_wcgallary ) || $post->post_type != 'product' ){
 				return;
 			}
@@ -233,7 +234,7 @@ class Featured_Image_By_URL_Admin {
 	 * Get Image metadata by post_id
 	 *
 	 * @since 1.0
-	 * @return void
+	 * @return array
 	 */
 	function knawatfibu_get_image_meta( $post_id, $is_single_page = false ){
 		
@@ -273,7 +274,7 @@ class Featured_Image_By_URL_Admin {
 	 * Adds Settings Page
 	 *
 	 * @since 1.0
-	 * @return array
+	 * @return void
 	 */
 	function knawatfibu_add_options_page() {
 		 add_options_page( __('Featured Image by URL', 'featured-image-by-url' ), __('Featured Image by URL', 'featured-image-by-url' ), 'manage_options', 'knawatfibu', array( $this, 'knawatfibu_options_page_html' ) );
@@ -283,7 +284,7 @@ class Featured_Image_By_URL_Admin {
 	 * Settings Page HTML
 	 *
 	 * @since 1.0
-	 * @return array
+	 * @return array|null
 	 */
 	function knawatfibu_options_page_html() {
 		// check user capabilities
@@ -313,7 +314,7 @@ class Featured_Image_By_URL_Admin {
 	 * Register custom settings, Sections & fields
 	 *
 	 * @since 1.0
-	 * @return array
+	 * @return void
 	 */
 	function knawatfibu_settings_init() {
 		register_setting( 'knawatfibu', KNAWATFIBU_OPTIONS );
@@ -355,7 +356,7 @@ class Featured_Image_By_URL_Admin {
 	 * Callback function for knawatfibu section.
 	 *
 	 * @since 1.0
-	 * @return array
+	 * @return void
 	 */
 	function knawatfibu_section_callback( $args ) {
 		// Do some HTML here.
@@ -365,7 +366,7 @@ class Featured_Image_By_URL_Admin {
 	 * Callback function for disabled_posttypes field.
 	 *
 	 * @since 1.0
-	 * @return array
+	 * @return void
 	 */
 	function disabled_posttypes_callback( $args ) {
 		// get the value of the setting we've registered with register_setting()
@@ -378,9 +379,9 @@ class Featured_Image_By_URL_Admin {
 		if( !empty( $post_types ) ){
 			foreach ($post_types as $key => $post_type ) {
 				?>
-				<label for="<?php echo $key; ?>" style="display: block;">
-		            <input name="<?php echo KNAWATFIBU_OPTIONS.'['. esc_attr( $args['label_for'] ).']'; ?>[]" class="disabled_posttypes" id="<?php echo $key; ?>" type="checkbox" value="<?php echo $key; ?>" <?php if( in_array( $key, $disabled_posttypes ) ){ echo 'checked="checked"'; } ?> >
-		            <?php echo $posttype_title = isset( $wp_post_types[$key]->label ) ? $wp_post_types[$key]->label : ucfirst( $key); ?>
+				<label for="<?php echo esc_attr( $key ); ?>" style="display: block;">
+		            <input name="<?php echo esc_attr( KNAWATFIBU_OPTIONS.'['. $args['label_for'] .']' ); ?>[]" class="disabled_posttypes" id="<?php echo esc_attr( $key ); ?>" type="checkbox" value="<?php echo esc_attr( $key ); ?>" <?php if( in_array( $key, $disabled_posttypes ) ){ echo 'checked="checked"'; } ?> >
+		            <?php echo $posttype_title = isset( $wp_post_types[$key]->label ) ? esc_html( $wp_post_types[$key]->label ) : esc_html( ucfirst( $key) ); ?>
 		        </label>
 				<?php
 			}
@@ -397,7 +398,7 @@ class Featured_Image_By_URL_Admin {
 	 * Callback function for resize_images field.
 	 *
 	 * @since 1.0
-	 * @return array
+	 * @return void
 	 */
 	function resize_images_callback( $args ) {
 		// get the value of the setting we've registered with register_setting()
@@ -405,7 +406,7 @@ class Featured_Image_By_URL_Admin {
 		$resize_images = isset( $options['resize_images'] ) ? $options['resize_images']  : false;
 		?>
 		<label for="resize_images">
-			<input name="<?php echo KNAWATFIBU_OPTIONS.'['. esc_attr( $args['label_for'] ).']'; ?>" type="checkbox" value="1" id="resize_images" <?php if ( !defined( 'JETPACK__VERSION' ) ) { echo 'disabled="disabled"'; }else{ if( $resize_images ){ echo 'checked="checked"'; } } ?>>
+			<input name="<?php echo esc_attr( KNAWATFIBU_OPTIONS.'['. $args['label_for'] .']' ); ?>" type="checkbox" value="1" id="resize_images" <?php if ( !defined( 'JETPACK__VERSION' ) ) { echo 'disabled="disabled"'; }else{ if( $resize_images ){ echo 'checked="checked"'; } } ?>>
 			<?php esc_html_e( 'Enable display resized images for image sizes like thumbnail, medium, large etc..', 'featured-image-by-url' ); ?>
 			
 		</label>
@@ -424,7 +425,7 @@ class Featured_Image_By_URL_Admin {
 	 */
 	function knawatfibu_get_posttypes( $raw = false ) {
 
-		$post_types = array_diff( get_post_types( array( 'public'   => true ), 'names' ), array( 'nav_menu_item', 'attachment', 'revision' ) );
+		$post_types = array_diff( get_post_types( array( 'public' => true ), 'names' ), array( 'nav_menu_item', 'attachment', 'revision' ) );
 		if( !empty( $post_types ) ){
 			foreach ( $post_types as $key => $post_type ) {
 				if( !post_type_supports( $post_type, 'thumbnail' ) ){
@@ -458,18 +459,18 @@ class Featured_Image_By_URL_Admin {
 			}
 		}
 		?>
-		<div id="knawatfibu_product_variation_<?php echo $variation->ID; ?>" class="knawatfibu_product_variation form-row form-row-first">
-			<label for="knawatfibu_pvar_url_<?php echo $variation->ID; ?>">
+		<div id="knawatfibu_product_variation_<?php echo esc_attr( $variation->ID ); ?>" class="knawatfibu_product_variation form-row form-row-first">
+			<label for="knawatfibu_pvar_url_<?php echo esc_attr( $variation->ID ); ?>">
 				<strong><?php _e('Product Variation Image by URL', 'featured-image-by-url') ?></strong>
 			</label>
 
-			<div id="knawatfibu_pvar_img_wrap_<?php echo $variation->ID; ?>" class="knawatfibu_pvar_img_wrap" style="<?php if( $knawatfibu_url == '' ){ echo 'display:none'; } ?>" >
-				<span href="#" class="knawatfibu_pvar_remove" data-id="<?php echo $variation->ID; ?>"></span>
-				<img id="knawatfibu_pvar_img_<?php echo $variation->ID; ?>" class="knawatfibu_pvar_img" data-id="<?php echo $variation->ID; ?>" src="<?php echo $knawatfibu_url; ?>" />
+			<div id="knawatfibu_pvar_img_wrap_<?php echo esc_attr( $variation->ID ); ?>" class="knawatfibu_pvar_img_wrap" style="<?php if( $knawatfibu_url == '' ){ echo 'display:none'; } ?>" >
+				<span href="#" class="knawatfibu_pvar_remove" data-id="<?php echo esc_attr( $variation->ID ); ?>"></span>
+				<img id="knawatfibu_pvar_img_<?php echo esc_attr( $variation->ID  ); ?>" class="knawatfibu_pvar_img" data-id="<?php echo esc_attr( $variation->ID ); ?>" src="<?php echo esc_attr( $knawatfibu_url ); ?>" />
 			</div>
-			<div id="knawatfibu_url_wrap_<?php echo $variation->ID; ?>" style="<?php if( $knawatfibu_url != '' ){ echo 'display:none'; } ?>" >
-				<input id="knawatfibu_pvar_url_<?php echo $variation->ID; ?>" class="knawatfibu_pvar_url" type="text" name="knawatfibu_pvar_url[<?php echo $variation->ID; ?>]" placeholder="<?php _e('Product Variation Image URL', 'featured-image-by-url'); ?>" value="<?php echo $knawatfibu_url; ?>"/>
-				<a id="knawatfibu_pvar_preview_<?php echo $variation->ID; ?>" class="knawatfibu_pvar_preview button" data-id="<?php echo $variation->ID; ?>">
+			<div id="knawatfibu_url_wrap_<?php echo esc_attr( $variation->ID ); ?>" style="<?php if( $knawatfibu_url != '' ){ echo 'display:none'; } ?>" >
+				<input id="knawatfibu_pvar_url_<?php echo esc_attr( $variation->ID ); ?>" class="knawatfibu_pvar_url" type="text" name="knawatfibu_pvar_url[<?php echo esc_attr( $variation->ID ); ?>]" placeholder="<?php _e('Product Variation Image URL', 'featured-image-by-url'); ?>" value="<?php echo esc_attr( $knawatfibu_url ); ?>"/>
+				<a id="knawatfibu_pvar_preview_<?php echo esc_attr( $variation->ID ); ?>" class="knawatfibu_pvar_preview button" data-id="<?php echo esc_attr( $variation->ID ); ?>">
 					<?php _e( 'Preview', 'featured-image-by-url' ); ?>
 				</a>
 			</div>
@@ -484,7 +485,7 @@ class Featured_Image_By_URL_Admin {
 	 */
 	public function knawatfibu_save_product_variation_image( $variation_id, $i ){
 
-		$image_url = isset( $_POST['knawatfibu_pvar_url'][$variation_id] ) ? esc_url( $_POST['knawatfibu_pvar_url'][$variation_id] ) : '';
+		$image_url = isset( $_POST['knawatfibu_pvar_url'][$variation_id] ) ? esc_url_raw( $_POST['knawatfibu_pvar_url'][$variation_id] ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
 		if( $image_url != '' ){
 			$img_url = get_post_meta( $variation_id, $this->image_meta_url , true );
 			if( is_array( $img_url ) && isset( $img_url['img_url'] ) && $image_url == $img_url['img_url'] ){
@@ -504,6 +505,20 @@ class Featured_Image_By_URL_Admin {
 			update_post_meta( $variation_id, $this->image_meta_url, $image_url );
 		}else{
 			delete_post_meta( $variation_id, $this->image_meta_url );
+		}
+	}
+
+	/**
+	 * Sanitize variables using sanitize_text_field and wp_unslash.
+	 *
+	 * @param string|array $var Data to sanitize.
+	 * @return string|array
+	 */
+	public function knawatfibu_sanitize( $var ) {
+		if ( is_array( $var ) ) {
+			return array_map( array( $this, 'knawatfibu_sanitize' ), $var );
+		} else {
+			return is_scalar( $var ) ? sanitize_text_field( wp_unslash( $var ) ) : $var;
 		}
 	}
 }

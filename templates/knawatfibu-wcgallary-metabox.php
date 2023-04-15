@@ -9,14 +9,14 @@ function knawatfibu_get_gallary_slot( $image_url = '' ){
 	?>
 	<div id="knawatfibu_wcgallary__COUNT__" class="knawatfibu_wcgallary">
 		<div id="knawatfibu_url_wrap__COUNT__" <?php if( $image_url != ''){ echo 'style="display: none;"'; } ?>>
-			<input id="knawatfibu_url__COUNT__" class="knawatfibu_url" type="text" name="knawatfibu_wcgallary[__COUNT__][url]" placeholder="<?php _e('Image URL', 'featured-image-by-url') ?>" data-id="__COUNT__" value="<?php echo $image_url; ?>"/>
+			<input id="knawatfibu_url__COUNT__" class="knawatfibu_url" type="text" name="knawatfibu_wcgallary[__COUNT__][url]" placeholder="<?php esc_attr_e('Image URL', 'featured-image-by-url') ?>" data-id="__COUNT__" value="<?php echo esc_url_raw( $image_url ); ?>"/>
 			<a id="knawatfibu_preview__COUNT__" class="knawatfibu_preview button" data-id="__COUNT__">
-				<?php _e( 'Preview', 'featured-image-by-url' ); ?>
+				<?php esc_html_e( 'Preview', 'featured-image-by-url' ); ?>
 			</a>
 		</div>
 		<div id="knawatfibu_img_wrap__COUNT__" class="knawatfibu_img_wrap" <?php if( $image_url == ''){ echo 'style="display: none;"'; } ?>>
 			<span href="#" class="knawatfibu_remove" data-id="__COUNT__"></span>
-			<img id="knawatfibu_img__COUNT__" class="knawatfibu_img" data-id="__COUNT__" src="<?php echo $image_url; ?>" />
+			<img id="knawatfibu_img__COUNT__" class="knawatfibu_img" data-id="__COUNT__" src="<?php echo esc_url( $image_url ); ?>" />
 		</div>
 	</div>
 	<?php
