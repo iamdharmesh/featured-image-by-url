@@ -114,7 +114,7 @@ class Featured_Image_By_URL_Admin {
 	function enqueue_admin_styles( $hook ) {
 		
 		$css_dir = KNAWATFIBU_PLUGIN_URL . 'assets/css/';
-	 	wp_enqueue_style('knawatfibu-admin', $css_dir . 'featured-image-by-url-admin.css', array(), '1.1.9', "" );
+	 	wp_enqueue_style('knawatfibu-admin', $css_dir . 'featured-image-by-url-admin.css', array(), '1.1.10', "" );
 		
 	}
 
@@ -319,6 +319,11 @@ class Featured_Image_By_URL_Admin {
 	 * @return void
 	 */
 	function knawatfibu_settings_init() {
+		$is_active = is_plugin_active( 'featured-image-with-url/featured-image-with-url.php' );
+		if ( ! $is_active ) {
+			add_thickbox();
+		}
+		
 		register_setting( 'knawatfibu', KNAWATFIBU_OPTIONS );
  
 		add_settings_section(
@@ -534,8 +539,6 @@ class Featured_Image_By_URL_Admin {
 		if ( $is_active || ! current_user_can( 'manage_options' ) ) {
 			return;
 		}
-
-		add_thickbox();
 		?>
 		<div class="notice notice-warning is-dismissible">
 			<p>
