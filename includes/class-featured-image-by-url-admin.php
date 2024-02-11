@@ -37,6 +37,8 @@ class Featured_Image_By_URL_Admin {
 			// Add & Save Product Variation Featured image by URL.
 			add_action( 'woocommerce_product_after_variable_attributes', array( $this, 'knawatfibu_add_product_variation_image_selector' ), 10, 3 );
 			add_action( 'woocommerce_save_product_variation', array( $this, 'knawatfibu_save_product_variation_image' ), 10, 2 );
+
+			add_action( 'admin_notices', array( $this, 'add_admin_notices' ) );
 		}
 	}
 
@@ -112,7 +114,7 @@ class Featured_Image_By_URL_Admin {
 	function enqueue_admin_styles( $hook ) {
 		
 		$css_dir = KNAWATFIBU_PLUGIN_URL . 'assets/css/';
-	 	wp_enqueue_style('knawatfibu-admin', $css_dir . 'featured-image-by-url-admin.css', array(), '1.1.9', "" );
+	 	wp_enqueue_style('knawatfibu-admin', $css_dir . 'featured-image-by-url-admin.css', array(), '1.1.10', "" );
 		
 	}
 
@@ -317,6 +319,11 @@ class Featured_Image_By_URL_Admin {
 	 * @return void
 	 */
 	function knawatfibu_settings_init() {
+		$is_active = is_plugin_active( 'featured-image-with-url/featured-image-with-url.php' );
+		if ( ! $is_active ) {
+			add_thickbox();
+		}
+		
 		register_setting( 'knawatfibu', KNAWATFIBU_OPTIONS );
  
 		add_settings_section(
@@ -520,5 +527,30 @@ class Featured_Image_By_URL_Admin {
 		} else {
 			return is_scalar( $var ) ? sanitize_text_field( wp_unslash( $var ) ) : $var;
 		}
+	}
+
+	/**
+	 * Add admin notices
+	 *
+	 * @return void
+	 */
+	public function add_admin_notices() {
+		$is_active = is_plugin_active( 'featured-image-with-url/featured-image-with-url.php' );
+		if ( $is_active || ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+		?>
+		<div class="notice notice-warning is-dismissible">
+			<p>
+				<?php
+				printf(
+					__( 'The <strong>Feature Image by URL</strong> plugin has been closed and is no longer being maintained. To ensure uninterrupted functionality, please install and activate the %1$sFeature Image with URL%2$s plugin. <strong>Feature Image with URL</strong> is a fork of the <strong>Feature Image by URL</strong> plugin, developed to provide ongoing support to existing users. All functionalities of the plugin will work seamlessly without any issues.', 'featured-image-by-url' ),
+					'<a href="' . esc_url( admin_url( 'plugin-install.php?tab=plugin-information&plugin=featured-image-with-url&TB_iframe=true&width=772&height=670' ) ) . '" class="thickbox open-plugin-details-modal"><strong>',
+					'</strong></a>'
+				);
+				?>
+			</p>
+		</div>
+		<?php
 	}
 }
